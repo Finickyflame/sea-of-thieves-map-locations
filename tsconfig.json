@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "esnext",
+    "lib": [ "es6", "esnext", "esnext.asynciterable", "dom", "es2018" ],
+    "inlineSourceMap": false,
+    "inlineSources": false,
+    "baseUrl": "src"
+  },
+  "exclude": [
+    "node_modules",
+    "public"
+  ]
+}

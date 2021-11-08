@@ -1,0 +1,22 @@
+﻿* {
+    font-family: 'Inknut Antiqua', serif;
+}
+
+body{
+    background-color: #000;
+    color: #E6EAD6;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+td, th {
+    padding: 0.5rem;
+    text-align: left;
+}
+
+a {
+    color: #A3DAB0;
+    text-decoration: underline;
+}
