@@ -16,12 +16,12 @@ firebase login
 npm run build
 ```
 
-- Build only Json "./data/locations.json":
+- Build only Json `./data/locations.json`:
 ```bash
 npm run build-json
 ```
 
-- Build only Json "./public/index.html":
+- Build only Json `./public/index.html`:
 ```bash
 npm run build-html
 ```
