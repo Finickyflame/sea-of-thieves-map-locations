@@ -19,7 +19,6 @@ header {
     position: sticky;
     background-color: rgba(0, 0, 0, 0.5);
     align-self: stretch;
-    padding: 1rem;
 
     display: flex;
     justify-content: space-around;
@@ -52,6 +51,7 @@ header {
     border-bottom: 1px solid #E6EAD6;
     color: #E6EAD6;
     font-size: 1.25rem;
+    margin: 0.5rem;
 }
 
 .search:focus {

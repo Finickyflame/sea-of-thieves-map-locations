@@ -18,7 +18,7 @@ export function createHtml(locations: MapLocation[]) {
 </head>
 <body>
 <header>
-    <a class="brand" href="/" title="Sea of Thieves">Sea of Thieves</a>
+    <a class="brand" href="#" title="Sea of Thieves">Sea of Thieves</a>
     <span class="title">Map locations</span>
     <input class="search" type="search" placeholder="Search..." />
 </header>

@@ -1,4 +1,4 @@
-﻿import {readFileSync, writeFileSync, rmSync, mkdirSync} from "fs";
+﻿import {readFileSync, writeFileSync, rmSync, mkdirSync, access} from "fs";
 import {MapLocationService} from "./MapLocationService";
 import {ConsoleLogger} from "./ConsoleLogger";
 import {MapLocation} from "./MapLocation";
@@ -68,7 +68,7 @@ function getJsonLocations(filePath: string, logger: Logger): MapLocation[] {
     }));
 }
 
-function writeHtml(filePath: string, locations: MapLocation[], logger: Logger){
+function writeHtml(filePath: string, locations: MapLocation[], logger: Logger) {
     logger.info(`Writing ${filePath}...`);
     const html = createHtml(locations);
     writeFileSync(htmlFilePath, html);
@@ -77,8 +77,12 @@ function writeHtml(filePath: string, locations: MapLocation[], logger: Logger){
 async function writeImages(folderPath: string, locations: MapLocation[], logger: Logger) {
     logger.info(`Deleting ${folderPath}...`);
     rmSync(folderPath, {recursive: true, force: true});
-    mkdirSync(folderPath);
-    
+    access(folderPath, err => {
+        if (err) {
+            mkdirSync(folderPath);
+        }
+    });
+
     for await(const image of new ImageService(logger).getImagesAsync(locations)) {
         const filePath = `${folderPath}/${image.fileName}`;
         logger.info(`Writing ${filePath}...`);
