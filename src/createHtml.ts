@@ -1,6 +1,8 @@
 ﻿import {MapLocation} from "./MapLocation";
+import {ImageService} from "./ImageService";
 
 export function createHtml(locations: MapLocation[]) {
+    const version = Date.now();
     return `<!doctype html>
 <html lang="en">
 <head>
@@ -12,29 +14,22 @@ export function createHtml(locations: MapLocation[]) {
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inknut+Antiqua:wght@300&display=swap" rel="stylesheet">
-    <link href="index.css" rel="stylesheet"/>
+    <link href="index.css?v=${version}" rel="stylesheet"/>
 </head>
 <body>
-<h1>Sea of Thieves</h1>
-<h2>Map locations</h2>
-<table class="locations">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Coordinates</th>
-            <th>Type</th>
-        </tr>
-    </thead>
-    <tbody>${locations.map(location => `
-        <tr>
-            <td class="name">
-                <a title="${location.name}" href="${location.uri}">${location.name}</a>
-            </td>
-            <td class="coordinates">${location.coordinates}</td>
-            <td class="type">${location.type}</td>
-        </tr>`).join("")}
-    </tbody>
-</table>
+<header>
+    <a class="brand" href="/" title="Sea of Thieves">Sea of Thieves</a>
+    <span class="title">Map locations</span>
+    <input class="search" type="search" placeholder="Search..." />
+</header>
+<main class="locations">${locations.map(location => `
+    <div class="location" data-name="${location.name}" data-type="${location.type}" data-coordinates="${location.coordinates}">
+        <img class="img" src="images/${ImageService.getFileName(location)}" alt="${location.name}" />
+        <a class="name" title="${location.name}" href="${location.uri}">${location.name}</a>
+        <span class="coordinates">${location.coordinates}</span>
+    </div>`).join("")}
+</main>
+<script src="index.js?v=${version}"></script>
 </body>
 </html>`;
 }

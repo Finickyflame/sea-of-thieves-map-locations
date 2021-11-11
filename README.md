@@ -11,22 +11,27 @@ firebase login
 ```
 
 ## Scripts
-- Build:
+Build everything:
 ```bash
 npm run build
 ```
 
-- Build only Json `./data/locations.json`:
+Build only Json `./data/locations.json`:
 ```bash
-npm run build-json
+npm run build json
 ```
 
-- Build only Json `./public/index.html`:
+Build only public html `./public/index.html`:
 ```bash
-npm run build-html
+npm run build html
 ```
 
-- Publish:
+Build only public images `./public/images/*.png`:
+```bash
+npm run build images
+```
+
+Publish:
 ```bash
 npm run publish
 ```

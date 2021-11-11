@@ -2,13 +2,9 @@
 import {Logger} from "./Logger";
 import {MapLocation} from "./MapLocation";
 
+export class MapLocationService {
 
-export class SeaOfThievesWikiCrawler {
-
-    private logger: Logger;
-
-    constructor(logger: Logger) {
-        this.logger = logger;
+    constructor(private logger: Logger) {
     }
 
     public async getLocationsAsync(): Promise<MapLocation[]> {
@@ -48,48 +44,64 @@ export class SeaOfThievesWikiCrawler {
         this.logger.info(`getLocationsType(document, ${type})`);
         const headline = document.querySelector(`.wds-tab__content #${type.replace(" ", "_")}`);
         const container = headline.parentElement.parentElement;
-        const items = Array.from(container.querySelectorAll("tbody tr"));
+        const items = Array.from(container.querySelectorAll<HTMLTableRowElement>("tbody tr"));
         for (const item of items) {
-            const link = item.querySelector<HTMLAnchorElement>("td:first-child a");
-            if (link) {
-                const coordinates = item.querySelector("td:nth-child(2)")?.textContent.replace("\n", "");
-                yield {
-                    name: link.title,
-                    uri: link.href,
-                    type,
-                    coordinates
-                }
+            const location = await this.getLocation(item, type);
+            if (location) {
+                yield location;
             }
         }
     }
 
-    async getLocation(name: string, uri: string): Promise<MapLocation> {
-        const document = await this.getContentDocumentAsync(uri);
-        const info = document.querySelector(".infoboxtable");
-        try {
-            const rows = Array.from(info.querySelectorAll<HTMLTableRowElement>("tr"));
-            const typeRow = rows.find(row => row.querySelector("th")?.textContent.startsWith("Type"));
-            const typeElement = typeRow.querySelector<HTMLAnchorElement>("a");
-            const coordinatesRow = rows.find(row => row.querySelector("th")?.textContent.startsWith("Coordinates"));
-            const coordinates = coordinatesRow.querySelector("b")?.textContent;
+    async getLocation(item: HTMLTableRowElement, type: string): Promise<MapLocation | undefined> {
+        const link = item.querySelector<HTMLAnchorElement>("td:first-child a");
+        if (link) {
+            const name = link.title;
+            const uri = link.href;
+            const coordinates = item.querySelector("td:nth-child(2)")?.textContent.replace("\n", "");            
+            const imgUri = getImgUri(uri.substr(uri.lastIndexOf("/") + 1).replace(/%27|_|-/g, ""));
+            
             return {
                 name,
                 uri,
-                type: typeElement.title,
-                typeUri: typeElement.href,
-                coordinates
-            };
-        }
-        catch (ex) {
-            this.logger.error();
+                type,
+                coordinates,
+                imgUri
+            }
         }
     }
 }
 
+/*
+ * e.g. https://seaofthieves.fandom.com/wiki/Galleon%27s_Grave_Outpost => https://ddc5e4l4zgom9.cloudfront.net/images/info/islands/small/galleonsgraveoutpost.png
+ */
+function getImgUri(name: string) {
+    return `https://ddc5e4l4zgom9.cloudfront.net/images/info/islands/small/${name.toLowerCase()}.png`;
+}
+
 function rewrite(location: MapLocation) {
-    switch (location.name){
+    switch (location.name) {
         case "Old Boot Fort":
             location.name = "Fort of the Damned";
             break;
+        case "Blind Man's Lagoon":
+            location.imgUri = getImgUri("blindmanlagoon");
+            break;
+        case "Forsaken Brink":
+            location.imgUri = getImgUri("theforsakenbrink");
+            break;
+        case "Kraken Watchtower":
+            location.imgUri = getImgUri("krakenswatchtower");
+            break;
+        case "Sailor's Knot Stronghold":
+            location.imgUri = getImgUri("sailorsknowstronghold");
+            break;
+        case "Scurvy Isley":
+            location.imgUri = getImgUri("scurvyisland");
+            break;
+        case "Three Paces East Seapost":
+            location.imgUri = getImgUri("thethreepaceseastemporium");
+            break;
+            
     }
 }

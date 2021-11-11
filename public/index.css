@@ -1,22 +1,100 @@
 ﻿* {
     font-family: 'Inknut Antiqua', serif;
+    margin: 0;
+    box-sizing: border-box;
 }
 
-body{
-    background-color: #000;
+body {
+    font-weight: 500;
     color: #E6EAD6;
+    background-color: #000;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-table {
-    border-collapse: collapse;
+header {
+    top: 0;
+    position: sticky;
+    background-color: rgba(0, 0, 0, 0.5);
+    align-self: stretch;
+    padding: 1rem;
+
+    display: flex;
+    justify-content: space-around;
+    align-items: baseline;
+    flex-wrap: wrap;
 }
 
-td, th {
-    padding: 0.5rem;
-    text-align: left;
+.brand {
+    font-size: 1.25rem;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.brand:hover {
+    text-decoration: underline;
+}
+
+.title {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.search {
+    flex: 1 1 100%;
+    outline: none;
+    font-family: 'Inknut Antiqua', serif;
+    font-weight: 500;
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid #E6EAD6;
+    color: #E6EAD6;
+    font-size: 1.25rem;
+}
+
+.search:focus {
+    border-color: #A3DAB0;
+}
+
+@media (min-width: 992px) {
+    .search {
+        max-width: 50%;
+    }
+}
+
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-results-button,
+input[type="search"]::-webkit-search-results-decoration {
+    -webkit-appearance: none;
 }
 
 a {
     color: #A3DAB0;
     text-decoration: underline;
+}
+
+.locations {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.location {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+}
+
+.img {
+    flex: 100%;
+    max-width: 295px;
+    max-height: 360px;
+}
+
+.hidden {
+    display: none;
 }

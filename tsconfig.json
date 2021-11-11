@@ -1,14 +1,22 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
+    "module": "ESNext",
     "target": "esnext",
     "lib": [ "es6", "esnext", "esnext.asynciterable", "dom", "es2018" ],
     "inlineSourceMap": false,
     "inlineSources": false,
-    "baseUrl": "src"
+    "baseUrl": "src",
+    "esModuleInterop": true,
+    "skipLibCheck": true
+  },
+  "ts-node": {
+    "compilerOptions": {
+      "module": "CommonJS"
+    }
   },
   "exclude": [
     "node_modules",
-    "public"
+    "public",
+    "data"
   ]
 }

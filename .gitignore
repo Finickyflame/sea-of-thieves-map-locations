@@ -456,3 +456,6 @@ $RECYCLE.BIN/
 
 # firebase
 .firebase
+
+# images
+/public/images
