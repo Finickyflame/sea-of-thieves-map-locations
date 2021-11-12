@@ -2,8 +2,13 @@
 import fetch from "node-fetch";
 import {Logger} from "./Logger";
 import {MapLocation} from "./MapLocation";
+import sharp from "sharp";
+
 
 export class ImageService {
+
+    public static readonly dimension = 295; 
+    
     constructor(private logger: Logger) {
     }
 
@@ -26,15 +31,25 @@ export class ImageService {
         if (response.status == 200) {
             return {
                 fileName: ImageService.getFileName(location),
-                content: await response.buffer()
+                content: await toWebp(response)
             };
         }
         else {
             this.logger.error(`Failed to retrieve image for '${location.name}' at '${location.imgUri}':`, response.status);
         }
     }
-    
+
     public static getFileName({name}: MapLocation): string {
-        return name.replace(/[ '-]/g, "") + ".png";
+        return name.replace(/[ '-]/g, "") + ".webp";
     }
+}
+
+async function toWebp(response): Promise<Buffer> {
+    const data = await response.buffer();
+    return new Promise(resolve =>
+        sharp(data)
+            .resize(ImageService.dimension)
+            .webp()
+            .toBuffer((err, buffer) => resolve(buffer))
+    );
 }

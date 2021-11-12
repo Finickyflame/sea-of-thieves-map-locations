@@ -14,33 +14,38 @@ const imagesPath = "./public/images";
 (async (args: string[]) => {
     const logger: Logger = new ConsoleLogger();
     try {
-        const [arg] = args;
-        logger.info("Starting");
-        logger.info(`Building ${arg ? `only ${arg}` : "all"}...`);
-        switch (arg) {
-            case "json": {
-                const locations = await getLocations(logger);
-                writeJson(locationFilePath, locations, logger);
-                break;
-            }
-            case "html": {
-                const locations: MapLocation[] = getJsonLocations(locationFilePath, logger);
-                writeHtml(htmlFilePath, locations, logger);
-                break;
-            }
-            case "images": {
-                const locations: MapLocation[] = getJsonLocations(locationFilePath, logger);
-                await writeImages(imagesPath, locations, logger);
-                break;
-            }
-            default: {
-                const locations = await getLocations(logger);
-                writeJson(locationFilePath, locations, logger);
-                writeHtml(htmlFilePath, locations, logger);
-                await writeImages(imagesPath, locations, logger);
+        logger.info("Starting...");
+        if (args.length > 0) {
+            for (const arg of args) {
+                logger.info(`Building ${arg ? `only ${arg}` : "all"}...`);
+                switch (arg) {
+                    case "json": {
+                        const locations = await getLocations(logger);
+                        writeJson(locationFilePath, locations, logger);
+                        break;
+                    }
+                    case "html": {
+                        const locations: MapLocation[] = getJsonLocations(locationFilePath, logger);
+                        writeHtml(htmlFilePath, locations, logger);
+                        break;
+                    }
+                    case "images": {
+                        const locations: MapLocation[] = getJsonLocations(locationFilePath, logger);
+                        await writeImages(imagesPath, locations, logger);
+                        break;
+                    }
+                    default:
+                        logger.error("Unknown arg:", arg);
+                        break;
+                }
             }
         }
-
+        else {
+            const locations = await getLocations(logger);
+            writeJson(locationFilePath, locations, logger);
+            writeHtml(htmlFilePath, locations, logger);
+            await writeImages(imagesPath, locations, logger);
+        }
     }
     catch (ex) {
         logger.error(ex);

@@ -5,8 +5,14 @@ Install packages:
 npm install
 ```
 
-Login to firebase (to deploy):
+Install workbox (to generate service worker)
 ```bash
+npm install workbox-cli -g
+```
+
+Install and Login to firebase (to deploy):
+```bash
+npm install firebase -g
 firebase login
 ```
 
@@ -29,6 +35,11 @@ npm run build html
 Build only public images `./public/images/*.png`:
 ```bash
 npm run build images
+```
+
+Build service worker:
+```bash
+workbox generateSW workbox-config.js
 ```
 
 Publish:
